@@ -151,24 +151,39 @@
       var row = 0;
       var pieceCount = 0;
       var rows = this.rows();
-      while (col < rows.length || row < rows.length){
+      while (col < rows.length && row < rows.length){
         if (rows[row][col] === 1){
           pieceCount++;
         }
         col++;
         row++;
       }
-      return (pieceCount > 1);
+      if (pieceCount > 1){
+        return true;
+      }
+
+      var col = 0; 
+      var row = majorDiagonalColumnIndexAtFirstRow;
+      var rows = this.rows();
+
+      var pieceCount = 0;
+      while (col < rows.length && row < rows.length){
+        if (rows[row][col] === 1){
+          pieceCount++;
+        }
+        col++;
+        row++;
+      }
+      return (pieceCount > 1)
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
       var rows = this.rows();
       var hasConflict = false;
-     // debugger;
       for (var i = 0; i < rows.length; i++){
         if(this.hasMajorDiagonalConflictAt(i)){
-        hasConflict = true;
+          hasConflict = true;
         }
       }
       return hasConflict; // fixme
@@ -181,18 +196,40 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-         var col = minorDiagonalColumnIndexAtFirstRow; 
+      var col = minorDiagonalColumnIndexAtFirstRow; 
       var row = 0;
       var pieceCount = 0;
       var rows = this.rows();
-      while (col >= 0 || row < rows.length){
+      while (col >= 0 && row < rows.length){
         if (rows[row][col] === 1){
           pieceCount++;
         }
         col--;
         row++;
       }
-      return (pieceCount > 1);
+      if (pieceCount > 1){
+        return true;
+      }
+
+
+      var col = rows.length-1; 
+      var row = rows.length - minorDiagonalColumnIndexAtFirstRow;
+      var pieceCount = 0;
+      while (col >= 0 && row < rows.length){
+        if (rows[row][col] === 1){
+          pieceCount++;
+        }
+        col--;
+        row++;
+      }
+      return (pieceCount > 1)
+
+      /*
+      [0, 0, 0, 0],
+      [0, 0, 0, 1],
+      [0, 0, 0, 0],
+      [0, 1, 0, 0]
+      */
     },
 
     // test if any minor diagonals on this board contain conflicts
